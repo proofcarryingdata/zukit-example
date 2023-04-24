@@ -1,25 +1,66 @@
 import { useZupass, ZupassLoginButton } from "zukit";
 
 export default function Home() {
+  const [zupass] = useZupass();
   return (
-    <main className={`flex min-h-screen flex-col items-center p-16 gap-8`}>
-      <h1>Zukit Example</h1>
-      <div>
-        <ZupassLoginButton />
-      </div>
-      <Status />
-    </main>
+    <div className="min-h-screen bg-gray-100 px-4 py-8">
+      <main className="flex flex-col items-center gap-8 bg-white rounded-2xl max-w-screen-sm mx-auto h-[24rem] p-8">
+        <h1 className="font-bold text-2xl">Zukit Example</h1>
+        <div className="flex flex-row gap-8 items-baseline">
+          {(zupass.status === "logged-out" || !zupass.anonymous) && (
+            <ZupassLoginButton />
+          )}
+          {zupass.status === "logged-out" && <span>or</span>}
+          {(zupass.status === "logged-out" || zupass.anonymous) && (
+            <ZupassLoginButton anonymous />
+          )}
+        </div>
+        <Status />
+      </main>
+    </div>
   );
 }
 
 function Status() {
   const [zupass] = useZupass();
-  switch (zupass.status) {
+  const { status } = zupass;
+  switch (status) {
     case "logged-out":
-      return <h2>Use the button above to log in</h2>;
     case "logging-in":
-      return <h2>Logging in...</h2>;
+      return null;
     case "logged-in":
-      return <h2>Welcome, anon</h2>;
+      if (zupass.anonymous) {
+        return (
+          <div className="flex flex-col gap-2">
+            <div>✅ Valid zero-knowledge proof</div>
+            <div>
+              👁️‍🗨️ Anonymity set <strong>{zupass.group.name}</strong>
+            </div>
+            <div>🕶️ You are one of {zupass.group.members.length} members</div>
+          </div>
+        );
+      } else {
+        return (
+          <div className="flex flex-col gap-2">
+            <div>✅ Valid zero-knowledge proof</div>
+            <div>
+              👋 Welcome, <strong>{zupass.participant.name}</strong>
+              <Pellet>{zupass.participant.role}</Pellet>
+            </div>
+            <div>🖋️ Email {zupass.participant.email}</div>
+            <div>👓 UUID {zupass.participant.uuid}</div>
+          </div>
+        );
+      }
+    default:
+      throw new Error(`Invalid status ${status}`);
   }
+}
+
+function Pellet({ children }: { children: string }) {
+  return (
+    <span className="inline-block bg-gray-100 rounded-md px-2 text-sm font-bold ml-2">
+      {children}
+    </span>
+  );
 }
