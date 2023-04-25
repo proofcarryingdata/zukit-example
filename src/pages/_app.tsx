@@ -4,7 +4,7 @@ import { ZupassProvider } from "zukit";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ZupassProvider>
+    <ZupassProvider passportClientURL="http://localhost:3000">
       <Component {...pageProps} />
     </ZupassProvider>
   );
