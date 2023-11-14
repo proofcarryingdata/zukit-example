@@ -1,5 +1,5 @@
-import { usePassportPopupSetup } from "@pcd/passport-interface";
+import { useZupassPopupSetup } from "zukit";
 
 export default function PassportPopup() {
-  return <div>{usePassportPopupSetup()}</div>;
+  return <div>{useZupassPopupSetup()}</div>;
 }
