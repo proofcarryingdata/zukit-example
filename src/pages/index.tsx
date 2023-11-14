@@ -44,8 +44,8 @@ function Status() {
           <div className="flex flex-col gap-2">
             <div>✅ Valid zero-knowledge proof</div>
             <div>
-              👋 Welcome, <strong>{zupass.participant.name}</strong>
-              <Pellet>{zupass.participant.role}</Pellet>
+              👋 Welcome, <strong>{zupass.participant.email}</strong>
+              <Pellet>{zupass.participant.commitment}</Pellet>
             </div>
             <div>🖋️ Email {zupass.participant.email}</div>
             <div>👓 UUID {zupass.participant.uuid}</div>
